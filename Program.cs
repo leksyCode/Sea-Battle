@@ -13,16 +13,23 @@ namespace Sea_Wars
             Console.CursorVisible = false;
 
             Player p = new Player("Serejka");
-
+            AI a = new AI();
 
             GameEngine.DrawPlayerMap();
             GameEngine.DrawEnemyMap();
             GameEngine.ShowInstructions();
-            
-            p.CreatingBoats();
 
+            //p.CreatingBoats();
+            a.CreatingAIMapAlgorithm();
             
-            //enemy.CreatingBoats
+
+
+
+
+
+
+
+
             //ShowInst_2
 
 
@@ -34,12 +41,12 @@ namespace Sea_Wars
             Console.ReadLine();
         }
 
-        public static string ChengeSymb(int position, string str)
+        public static string ChengeSymb(int position, string str, char symb)
 
         {
             string t = str;
             char[] chars = t.ToCharArray();
-            chars[position] = '#';
+            chars[position] = symb;
             str = new string(chars);
             return str;
         }

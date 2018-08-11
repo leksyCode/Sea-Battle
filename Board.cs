@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 namespace Sea_Wars
 {
     public class Board
-    {
+    {    	
         public const int countOfBoats = 20;
         public static readonly int width = 21; 
         public static string[] PlayerField = new string[]

@@ -32,6 +32,7 @@ namespace Sea_Wars
                 Console.SetCursorPosition(displayPosition_X, displayPosition_Y + i);
                 Console.Write(Board.EnemyField[i]);
             }
+            displayPosition_X -= 30;
         }
 
         public static void ShowInstructions()
@@ -46,26 +47,42 @@ namespace Sea_Wars
         {
             Console.SetCursorPosition(0, 11);
             Console.Write("U must creat another: " + (20 - i));
-            if (i<10)
+            if (i < 10)
             {
-                Console.WriteLine(' ');
+                Console.WriteLine(" ");
+            }
+            switch (stage)
+            {
+                case 0:
+                    {
+                        Console.WriteLine("\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t");
+                        break;
+                    }
+                case 1:
+                    {
+                        Console.WriteLine("U must create a major ship");
+                        break;
+                    }
+                case 2:
+                    {
+                        Console.WriteLine("stage 2");
+                        break;
+                    }
+                case 3:
+                    {
+                        Console.WriteLine("stage 3");
+                        break;
+                    }
+                case 4:
+                    {
+                        Console.WriteLine("U must creat yet " + (4 - i) + " single ships. They cant touch each other");
+                        break;
+                    }
+                default:
+                    break;
             }
 
-            if (stage == 0)
-            {
-                Console.WriteLine("\t\t\t\t\n\t\t\t\t");
-            }
-            else if (stage == 1)
-            {
-                Console.WriteLine("U can't creat boat here");
-            }
-            
-
-            
-            
-        }
-        
-
-       
+                
+        }       
     }
 }
