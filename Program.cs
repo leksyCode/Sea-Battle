@@ -12,29 +12,20 @@ namespace Sea_Wars
         {
             Console.CursorVisible = false;
 
-            Player p = new Player("Serejka");
+            Player p = new Player("Human");
             AI a = new AI();
 
             GameEngine.DrawPlayerMap();
             GameEngine.DrawEnemyMap();
             GameEngine.ShowInstructions();
 
-            //p.CreatingBoats();
-            a.CreatingAIMapAlgorithm();
-            
-
-
-
-
-
-
+            //p.CreatingBoats(); still not working
+            a.CreatingAIMapAlgorithm(); // works almost always
+            GameEngine.DrawEnemyMap();
 
 
             //ShowInst_2
-
-
             //  Main game loop
-
             //while (!gameover)
             //p.Step(); enemy.Step();
 

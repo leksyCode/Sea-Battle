@@ -123,46 +123,28 @@ namespace Sea_Wars
 
         public bool CheckBesideCell(int x, int y, int countShips, out int phaze)
         {
-                phaze = 4;
-                try
-                {
-                    if (Board.PlayerField[y][x] == '#')
-                    {
-                        return true;
-                    }
-                    else if (Board.PlayerField[y + 1][x] == '#' || Board.PlayerField[y - 1][x] == '#')
-                    {
-                        return true;
-                    }
-                    else if (Board.PlayerField[y][x - 2] == '#' || Board.PlayerField[y][x + 2] == '#')
-                    {
-                        return true;
-                    }
-                    else if (Board.PlayerField[y + 1][x - 2] == '#' || Board.PlayerField[y + 1][x + 2] == '#')
-                    {
-                        return true;
-                    }
-                    else if (Board.PlayerField[y - 1][x - 2] == '#' || Board.PlayerField[y - 1][x + 2] == '#')
-                    {
-                        return true;
-                    }
-                }
-                catch (Exception)
-                {
-                    phaze = 4;
-                    if (Board.PlayerField[y][x - 2] == '#' || Board.PlayerField[y + 1][x - 2] == '#')
-                    {
-                        return true;
-                    }
-                    else if (Board.PlayerField[y - 1][x - 2] == '#')
-                    {
-                        return true;
-                    }
-                }
-            
-            
+            phaze = 4;
+            if (Board.PlayerField[y][x] == '#')
+            {
+                return true;
+            }
+            else if (Board.PlayerField[y + 1][x] == '#' || Board.PlayerField[y - 1][x] == '#')
+            {
+                return true;
+            }
+            else if (Board.PlayerField[y][x - 2] == '#' || Board.PlayerField[y][x + 2] == '#')
+            {
+                return true;
+            }
+            else if (Board.PlayerField[y + 1][x - 2] == '#' || Board.PlayerField[y + 1][x + 2] == '#')
+            {
+                return true;
+            }
+            else if (Board.PlayerField[y - 1][x - 2] == '#' || Board.PlayerField[y - 1][x + 2] == '#')
+            {
+                return true;
+            }
             return false;
-
         }
        
     }
