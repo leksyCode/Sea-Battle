@@ -1,9 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Sea_Wars
 {
@@ -112,29 +107,23 @@ namespace Sea_Wars
                 }
                 else if (direction == ConsoleKey.Enter)
                 {
-                    fixSharp = true;
-                    SetShip(stage, currentCell_X, currentCell_Y, false);
+                    ConsoleKey location = 0;
+                    if (stage != 1)
+                    {
+                        location = Console.ReadKey(true).Key;
+                    }
 
+                    SetShip(stage, currentCell_X, currentCell_Y, location);
+                    fixSharp = true;
                 }
             }
         }
 
-        public void SetShip(int deck, int x, int y, bool verticall)
+        public void SetShip(int deck, int x, int y, ConsoleKey location)
         {
-            int canSetRight = 0, canSetLeft = 0;
-            bool locationRight = false, locationUp = false;
+            int canSetRight = 0, canSetLeft = 0, canSetUp = 0, canSetDown = 0;
 
-            if (x < (Board.width / 2) + 2)
-            {
-                locationRight = true;
-            }
-            if (y > (9 / 2))
-            {
-                locationUp = true;
-            }
-
-
-            if (locationRight == true)
+            if (location == ConsoleKey.RightArrow || location == ConsoleKey.D)
             {
                 for (int i = 0; i < deck; i++)
                 {
@@ -144,7 +133,7 @@ namespace Sea_Wars
                     }
                 }
             }
-            else if (locationRight == false)
+            else if (location == ConsoleKey.LeftArrow || location == ConsoleKey.A)
             {
                 for (int i = 0; i < deck; i++)
                 {
@@ -154,55 +143,119 @@ namespace Sea_Wars
                     }
                 }
             }
+            else if (location == ConsoleKey.UpArrow || location == ConsoleKey.W)
+            {
+                for (int i = 0; i < deck; i++)
+                {
+                    if (CheckBesideCell(x, y - i))
+                    {
+                        canSetUp++;
+                    }
+                }
+            }
+            else if (location == ConsoleKey.DownArrow || location == ConsoleKey.S)
+            {
+                for (int i = 0; i < deck; i++)
+                {
+                    if (CheckBesideCell(x, y + i))
+                    {
+                        canSetDown++;
+                    }
+                }
+            }
 
-            if (canSetRight == deck)
+
+            try
             {
-                for (int i = 0; i < deck; i++)
+                if (canSetRight == deck)
                 {
-                    Console.SetCursorPosition(x + (i * 2), y);
-                    Console.Write('#');
-                    Board.PlayerField[y] = Program.ChengeSymb(x + (i * 2), Board.PlayerField[y], '#');
-                    currentBoats++;
+                    for (int i = 0; i < deck; i++)
+                    {
+                        Console.SetCursorPosition(x + (i * 2), y);
+                        Console.Write('#');
+                        Board.PlayerField[y] = Program.ChengeSymb(x + (i * 2), Board.PlayerField[y], '#');
+                        currentBoats++;
+                    }
+                }
+                else if (canSetLeft == deck)
+                {
+                    for (int i = 0; i < deck; i++)
+                    {
+                        Console.SetCursorPosition(x - (i * 2), y);
+                        Console.Write('#');
+                        Board.PlayerField[y] = Program.ChengeSymb(x - (i * 2), Board.PlayerField[y], '#');
+                        currentBoats++;
+                    }
+                }
+                else if (canSetUp == deck)
+                {
+                    for (int i = 0; i < deck; i++)
+                    {
+                        Console.SetCursorPosition(x, y - i);
+                        Console.Write('#');
+                        Board.PlayerField[y - i] = Program.ChengeSymb(x, Board.PlayerField[y - i], '#');
+                        currentBoats++;
+                    }
+                }
+                else if (canSetDown == deck)
+                {
+                    for (int i = 0; i < deck; i++)
+                    {
+                        Console.SetCursorPosition(x, y + i);
+                        Console.Write('#');
+                        Board.PlayerField[y + i] = Program.ChengeSymb(x, Board.PlayerField[y + i], '#');
+                        currentBoats++;
+                    }
+                }
+                else if (location == 0)
+                {
+                    if (CheckBesideCell(x, y))
+                    {
+                        Console.SetCursorPosition(x, y);
+                        Console.Write('#');
+                        Board.PlayerField[y] = Program.ChengeSymb(x, Board.PlayerField[y], '#');
+                        currentBoats++;
+                    }
+                }
+                else
+                {
+                    return;
                 }
             }
-            else if (canSetLeft == deck)
-            {
-                for (int i = 0; i < deck; i++)
-                {
-                    Console.SetCursorPosition(x - (i * 2), y);
-                    Console.Write('#');
-                    Board.PlayerField[y] = Program.ChengeSymb(x - (i * 2), Board.PlayerField[y], '#');
-                    currentBoats++;
-                }
-            }
-            else
+            catch (Exception)
             {
                 return;
             }
-
         }
 
 
 
         public bool CheckBesideCell(int x, int y)
         {
-            if (Board.PlayerField[y][x] == '#')
+            try
             {
-                return false;
+                if (Board.PlayerField[y][x] == '#')
+                {
+                    return false;
+                }
+                else if (Board.PlayerField[y + 1][x] == '#' || Board.PlayerField[y - 1][x] == '#')
+                {
+                    return false;
+                }
+                else if (Board.PlayerField[y][x - 2] == '#' || Board.PlayerField[y][x + 2] == '#')
+                {
+                    return false;
+                }
+                else if (Board.PlayerField[y + 1][x - 2] == '#' || Board.PlayerField[y + 1][x + 2] == '#')
+                {
+                    return false;
+                }
+                else if (Board.PlayerField[y - 1][x - 2] == '#' || Board.PlayerField[y - 1][x + 2] == '#')
+                {
+                    return false;
+                }
             }
-            else if (Board.PlayerField[y + 1][x] == '#' || Board.PlayerField[y - 1][x] == '#')
-            {
-                return false;
-            }
-            else if (Board.PlayerField[y][x - 2] == '#' || Board.PlayerField[y][x + 2] == '#')
-            {
-                return false;
-            }
-            else if (Board.PlayerField[y + 1][x - 2] == '#' || Board.PlayerField[y + 1][x + 2] == '#')
-            {
-                return false;
-            }
-            else if (Board.PlayerField[y - 1][x - 2] == '#' || Board.PlayerField[y - 1][x + 2] == '#')
+            catch (Exception)
             {
                 return false;
             }
