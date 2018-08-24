@@ -4,14 +4,16 @@ namespace Sea_Wars
 {
     class Player
     {
-        string Name { get; set; }
+        public string Name { get; set; }
+        public int Health { get; set; }
 
         private int currentBoats = 0;
-        private bool verticall = false;
+        private string message = null;
 
         public Player(string name)
         {
             Name = name;
+            Health = 20;
         }
 
         public void CreatingPlayerMap()
@@ -21,7 +23,6 @@ namespace Sea_Wars
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.SetCursorPosition(currentCell_X, currentCell_Y);
             Console.Write("@");
-
 
             int stage = 4;
 
@@ -34,55 +35,53 @@ namespace Sea_Wars
                 else if (currentBoats >= 16)
                     stage = 1;
 
-
-                GameEngine.ShowInfo(stage);
+                GameEngine.ShowInfo(stage, message);
+                message = null;
 
                 ConsoleKey direction = Console.ReadKey(true).Key;
 
                 if (direction == ConsoleKey.LeftArrow || direction == ConsoleKey.A)
                 {
                     if (currentCell_X > 2)
-                    {
-                        GameEngine.DrawPlayerMap();
+                    {                        
                         if (!fixSharp)
                         {
                             Console.SetCursorPosition(currentCell_X, currentCell_Y);
                             Console.Write('.');
                         }
+                        GameEngine.DrawPlayerMap();
                         currentCell_X -= 2;
                         Console.SetCursorPosition(currentCell_X, currentCell_Y);
                         Console.Write("@");
                         fixSharp = false;
                     }
-
                 }
                 else if (direction == ConsoleKey.RightArrow || direction == ConsoleKey.D)
                 {
                     if (currentCell_X < 20)
                     {
-                        GameEngine.DrawPlayerMap();
                         if (!fixSharp)
                         {
                             Console.SetCursorPosition(currentCell_X, currentCell_Y);
                             Console.Write('.');
                         }
+                        GameEngine.DrawPlayerMap();
                         currentCell_X += 2;
                         Console.SetCursorPosition(currentCell_X, currentCell_Y);
                         Console.Write("@");
                         fixSharp = false;
                     }
-
                 }
                 else if (direction == ConsoleKey.UpArrow || direction == ConsoleKey.W)
                 {
                     if (currentCell_Y > 1)
                     {
-                        GameEngine.DrawPlayerMap();
                         if (!fixSharp)
                         {
                             Console.SetCursorPosition(currentCell_X, currentCell_Y);
                             Console.Write('.');
                         }
+                        GameEngine.DrawPlayerMap();
                         currentCell_Y--;
                         Console.SetCursorPosition(currentCell_X, currentCell_Y);
                         Console.Write("@");
@@ -93,12 +92,12 @@ namespace Sea_Wars
                 {
                     if (currentCell_Y < 9)
                     {
-                        GameEngine.DrawPlayerMap();
                         if (!fixSharp)
                         {
                             Console.SetCursorPosition(currentCell_X, currentCell_Y);
                             Console.Write('.');
                         }
+                        GameEngine.DrawPlayerMap();
                         currentCell_Y++;
                         Console.SetCursorPosition(currentCell_X, currentCell_Y);
                         Console.Write("@");
@@ -115,11 +114,12 @@ namespace Sea_Wars
 
                     SetShip(stage, currentCell_X, currentCell_Y, location);
                     fixSharp = true;
+                    GameEngine.DrawPlayerMap();
                 }
             }
         }
 
-        public void SetShip(int deck, int x, int y, ConsoleKey location)
+        private void SetShip(int deck, int x, int y, ConsoleKey location)
         {
             int canSetRight = 0, canSetLeft = 0, canSetUp = 0, canSetDown = 0;
 
@@ -174,6 +174,7 @@ namespace Sea_Wars
                         Console.SetCursorPosition(x + (i * 2), y);
                         Console.Write('#');
                         Board.PlayerField[y] = Program.ChengeSymb(x + (i * 2), Board.PlayerField[y], '#');
+
                         currentBoats++;
                     }
                 }
@@ -216,21 +217,28 @@ namespace Sea_Wars
                         Board.PlayerField[y] = Program.ChengeSymb(x, Board.PlayerField[y], '#');
                         currentBoats++;
                     }
+                    else
+                    {
+                        message = "U can't create a ship here \n";
+                        return;
+                    }
                 }
                 else
                 {
+                    message = "U can't create a ship in this direction \n";
                     return;
                 }
             }
             catch (Exception)
             {
+                message = "U can't create a ship in this direction \n";
                 return;
             }
         }
 
 
 
-        public bool CheckBesideCell(int x, int y)
+        private bool CheckBesideCell(int x, int y)
         {
             try
             {
@@ -262,5 +270,115 @@ namespace Sea_Wars
             return true;
         }
 
+        int currentCell_X = 32, currentCell_Y = 1;
+        public int MakeStep(int enemyHealth)
+        {
+            
+            bool fixSharp = false;
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            Console.SetCursorPosition(currentCell_X, currentCell_Y);
+            Console.Write("@");
+            message = "Choose enemy cell and tap Enter";
+
+
+            bool choice = false;
+
+            while (!choice)
+            {
+                
+                GameEngine.ShowInfo(0, message);
+                message = null;
+
+                ConsoleKey direction = Console.ReadKey(true).Key;
+
+                if (direction == ConsoleKey.LeftArrow || direction == ConsoleKey.A)
+                {
+                    if (currentCell_X > 32)
+                    {                   
+                        if (!fixSharp)
+                        {
+                            Console.SetCursorPosition(currentCell_X, currentCell_Y);
+                            Console.Write('.');
+                        }
+                        GameEngine.DrawHiddenEnemyMap();
+                        currentCell_X -= 2;
+                        Console.SetCursorPosition(currentCell_X, currentCell_Y);
+                        Console.Write("@");
+                        fixSharp = false;
+                    }
+                }
+                else if (direction == ConsoleKey.RightArrow || direction == ConsoleKey.D)
+                {
+                    if (currentCell_X < 50)
+                    {
+                        if (!fixSharp)
+                        {
+                            Console.SetCursorPosition(currentCell_X, currentCell_Y);
+                            Console.Write('.');
+                        }
+                        GameEngine.DrawHiddenEnemyMap();
+                        currentCell_X += 2;
+                        Console.SetCursorPosition(currentCell_X, currentCell_Y);
+                        Console.Write("@");
+                        fixSharp = false;
+                        
+                    }
+                }
+                else if (direction == ConsoleKey.UpArrow || direction == ConsoleKey.W)
+                {
+                    if (currentCell_Y > 1)
+                    {                       
+                        if (!fixSharp)
+                        {
+                            Console.SetCursorPosition(currentCell_X, currentCell_Y);
+                            Console.Write('.');
+                        }
+                        GameEngine.DrawHiddenEnemyMap();
+                        currentCell_Y--;
+                        Console.SetCursorPosition(currentCell_X, currentCell_Y);
+                        Console.Write("@");
+                        fixSharp = false;
+                    }
+                }
+                else if (direction == ConsoleKey.DownArrow || direction == ConsoleKey.S)
+                {
+                    if (currentCell_Y < 9)
+                    {                        
+                        if (!fixSharp)
+                        {
+                            Console.SetCursorPosition(currentCell_X, currentCell_Y);
+                            Console.Write('.');
+                        }
+                        GameEngine.DrawHiddenEnemyMap();
+                        currentCell_Y++;
+                        Console.SetCursorPosition(currentCell_X, currentCell_Y);
+                        Console.Write("@");
+                        fixSharp = false;
+                    }
+                }
+                else if (direction == ConsoleKey.Enter)
+                {
+                    
+                    if (Board.EnemyField[currentCell_Y][currentCell_X - 30] == '#' && Board.EmtyField[currentCell_Y][currentCell_X - 30] != 'X')
+                    {
+                        Board.EmtyField[currentCell_Y] = Program.ChengeSymb(currentCell_X - 30, Board.EmtyField[currentCell_Y], 'X');
+                        enemyHealth--;                        
+                        choice = true;
+                    }
+                    else if (Board.EmtyField[currentCell_Y][currentCell_X - 30] != '*' && Board.EnemyField[currentCell_Y][currentCell_X - 30] == '.')
+                    {
+                        Board.EmtyField[currentCell_Y] = Program.ChengeSymb(currentCell_X - 30, Board.EmtyField[currentCell_Y], '*');
+                        choice = true;
+                    }
+                    else
+                    {
+                        choice = false;
+                        message = "U were already been on this cell";                       
+                    }
+                }
+            }
+            return enemyHealth;
+        }
     }
+
 }

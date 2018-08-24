@@ -21,12 +21,12 @@ namespace Sea_Wars
                 Console.WriteLine(Board.PlayerField[i]);
             }
         }
-         
+
         public static void DrawEnemyMap()
         {
             Console.ForegroundColor = ConsoleColor.Magenta;
             displayPosition_X += 30;
-           
+
             for (int i = 0; i < Board.EnemyField.Length; i++)
             {
                 Console.SetCursorPosition(displayPosition_X, displayPosition_Y + i);
@@ -35,54 +35,42 @@ namespace Sea_Wars
             displayPosition_X -= 30;
         }
 
-        public static void ShowInstructions()
+        public static void DrawHiddenEnemyMap()
         {
-            Console.SetCursorPosition(0,14);
-            Console.ForegroundColor = ConsoleColor.White;
-            Console.WriteLine("\t\t   Instructions ");
-            Console.WriteLine("Creat your sea flot. U can write coordinates of boats like (D4) or use navigation buttons");
+            Console.ForegroundColor = ConsoleColor.Magenta;
+            displayPosition_X += 30;
+
+            for (int i = 0; i < Board.EmtyField.Length; i++)
+            {
+                Console.SetCursorPosition(displayPosition_X, displayPosition_Y + i);
+                Console.Write(Board.EmtyField[i]);
+            }
+            displayPosition_X -= 30;
         }
 
-        public static void ShowInfo(int i, int stage)
+        public static void ShowInstructions()
+        {
+            Console.SetCursorPosition(0, 14);
+            Console.ForegroundColor = ConsoleColor.White;
+            Console.WriteLine("\t\t   Instructions ");
+            Console.WriteLine("Creat your sea flot. U can use navigation buttons!");
+        }
+
+        public static void ShowInfo(int stage, string message)
         {
             Console.SetCursorPosition(0, 11);
-            Console.Write("U must creat another: " + (20 - i));
-            if (i < 10)
+            if (!String.IsNullOrWhiteSpace(message))
             {
-                Console.WriteLine(" ");
+                Console.WriteLine("\t\t\t\t\t\t\t\t\t\t");
+                Console.SetCursorPosition(0, 11);
+                Console.Write(message);
             }
-            switch (stage)
+            else if (stage != 0)
             {
-                case 0:
-                    {
-                        Console.WriteLine("\t\t\t\t\t\t\t\t\t\n\t\t\t\t\t\t\t\t\t\t\t\t");
-                        break;
-                    }
-                case 1:
-                    {
-                        Console.WriteLine("U must create a major ship");
-                        break;
-                    }
-                case 2:
-                    {
-                        Console.WriteLine("stage 2");
-                        break;
-                    }
-                case 3:
-                    {
-                        Console.WriteLine("stage 3");
-                        break;
-                    }
-                case 4:
-                    {
-                        Console.WriteLine("U must creat yet " + (4 - i) + " single ships. They cant touch each other");
-                        break;
-                    }
-                default:
-                    break;
+                Console.Write($"U must creat {5 - stage} ships with {stage}-deck\n");
             }
 
-                
-        }       
+
+        }
     }
 }

@@ -12,8 +12,6 @@ namespace Sea_Wars
         public static readonly int width = 21; 
         public static string[] PlayerField = new string[]
         {
-           //012 4 6 8   
-           // Empty Field
             "[_A_B_C_D_E_F_G_H_I_J_]",
             "1 . . . . . . . . . . |",
             "2 . . . . . . . . . . |", 
@@ -27,6 +25,20 @@ namespace Sea_Wars
             "*^^^^^^^^^^^^^^^^^^^^^*",
         };
         public static string[] EnemyField = new string[]
+        {
+            "[_A_B_C_D_E_F_G_H_I_J_]",
+            "1 . . . . . . . . . . |",
+            "2 . . . . . . . . . . |",
+            "3 . . . . . . . . . . |",
+            "4 . . . . . . . . . . |",
+            "5 . . . . . . . . . . |",
+            "6 . . . . . . . . . . |",
+            "7 . . . . . . . . . . |",
+            "8 . . . . . . . . . . |",
+            "9 . . . . . . . . . . |",
+            "*^^^^^^^^^^^^^^^^^^^^^*",
+        };
+        public static string[] EmtyField = new string[]
         {
             "[_A_B_C_D_E_F_G_H_I_J_]",
             "1 . . . . . . . . . . |",

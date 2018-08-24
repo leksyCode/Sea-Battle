@@ -8,7 +8,14 @@ namespace Sea_Wars
 {
     class AI
     {
-        public AI () { }
+        public string Name { get; set; }
+        public int Health { get; set; }
+
+        public AI(string name)
+        {
+            Name = name;
+            Health = 20;
+        }
 
         public void CreatingAIMapAlgorithm()
         {
@@ -116,7 +123,7 @@ namespace Sea_Wars
             }           
         }
 
-        public void DeleteUnfinishedBoats(int dir, int i, int x, int y)
+        private void DeleteUnfinishedBoats(int dir, int i, int x, int y)
         {
             for (int j = 0; j < i; j++) // delete unfinished boat
             {
@@ -136,7 +143,7 @@ namespace Sea_Wars
             }
         }
 
-        public bool CheckBesideCell(int x, int y, int dir)
+        private static bool CheckBesideCell(int x, int y, int dir)
         {
             if (Board.EnemyField[y][x] == '#')
             {
@@ -170,6 +177,16 @@ namespace Sea_Wars
             {
                 return false;
             }
+        }
+
+        int i = 0;
+        public int MakeStep(int playerHealth)
+        {
+            
+            Console.SetCursorPosition(0, 13);
+            Console.WriteLine($"Steps: { i }, Player Health: {playerHealth},  EnemyHEalth: {Health}.");
+            i++;
+            return playerHealth;
         }
     }
 }

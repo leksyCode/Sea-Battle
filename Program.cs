@@ -13,27 +13,31 @@ namespace Sea_Wars
             Console.CursorVisible = false;
 
             Player p = new Player("Human");
-            AI a = new AI();
-
+            AI a = new AI("Bot");
+            
             GameEngine.DrawPlayerMap();
-            GameEngine.DrawEnemyMap();
+            GameEngine.DrawHiddenEnemyMap();
             GameEngine.ShowInstructions();
 
-            //p.CreatingBoats(); still not working
-            a.CreatingAIMapAlgorithm(); // works almost always
-            GameEngine.DrawEnemyMap();
 
+            a.CreatingAIMapAlgorithm(); // works almost always (95%)          
+            //p.CreatingPlayerMap();
+          
 
-            //ShowInst_2
-            //  Main game loop
-            //while (!gameover)
-            //p.Step(); enemy.Step();
+        
+            while (p.Health > 0 && a.Health > 0)
+            {
+                a.Health = p.MakeStep(a.Health);
+                GameEngine.DrawHiddenEnemyMap();
+                p.Health = a.MakeStep(p.Health);
+            }
+
+            // TO DO NEXT11
 
             Console.ReadLine();
         }
 
         public static string ChengeSymb(int position, string str, char symb)
-
         {
             string t = str;
             char[] chars = t.ToCharArray();
