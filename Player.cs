@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Sea_Wars
 {
@@ -43,7 +44,7 @@ namespace Sea_Wars
                 if (direction == ConsoleKey.LeftArrow || direction == ConsoleKey.A)
                 {
                     if (currentCell_X > 2)
-                    {                        
+                    {
                         if (!fixSharp)
                         {
                             Console.SetCursorPosition(currentCell_X, currentCell_Y);
@@ -242,25 +243,31 @@ namespace Sea_Wars
         {
             try
             {
-                if (Board.PlayerField[y][x] == '#')
+                for (int k = 0, i = 1, j = 0; k < 8; i *= -1, j *= i, k++)
                 {
-                    return false;
-                }
-                else if (Board.PlayerField[y + 1][x] == '#' || Board.PlayerField[y - 1][x] == '#')
-                {
-                    return false;
-                }
-                else if (Board.PlayerField[y][x - 2] == '#' || Board.PlayerField[y][x + 2] == '#')
-                {
-                    return false;
-                }
-                else if (Board.PlayerField[y + 1][x - 2] == '#' || Board.PlayerField[y + 1][x + 2] == '#')
-                {
-                    return false;
-                }
-                else if (Board.PlayerField[y - 1][x - 2] == '#' || Board.PlayerField[y - 1][x + 2] == '#')
-                {
-                    return false;
+                    switch (k)
+                    {
+                        case 2:
+                            {
+                                j++;
+                                break;
+                            }
+                        case 6:
+                            {
+                                i = 0;
+                                j = 1;
+                                break;
+                            }
+                        case 7:
+                            {
+                                j = -1;
+                                break;
+                            }
+                    }
+                    if (Board.PlayerField[y + j][x + (i * 2)] == '#')
+                    {
+                        return false;
+                    }
                 }
             }
             catch (Exception)
@@ -271,21 +278,19 @@ namespace Sea_Wars
         }
 
         int currentCell_X = 32, currentCell_Y = 1;
+
         public int MakeStep(int enemyHealth)
         {
-            
             bool fixSharp = false;
             Console.ForegroundColor = ConsoleColor.Magenta;
             Console.SetCursorPosition(currentCell_X, currentCell_Y);
             Console.Write("@");
-            message = "Choose enemy cell and tap Enter";
-
 
             bool choice = false;
 
             while (!choice)
             {
-                
+
                 GameEngine.ShowInfo(0, message);
                 message = null;
 
@@ -294,7 +299,7 @@ namespace Sea_Wars
                 if (direction == ConsoleKey.LeftArrow || direction == ConsoleKey.A)
                 {
                     if (currentCell_X > 32)
-                    {                   
+                    {
                         if (!fixSharp)
                         {
                             Console.SetCursorPosition(currentCell_X, currentCell_Y);
@@ -321,13 +326,13 @@ namespace Sea_Wars
                         Console.SetCursorPosition(currentCell_X, currentCell_Y);
                         Console.Write("@");
                         fixSharp = false;
-                        
+
                     }
                 }
                 else if (direction == ConsoleKey.UpArrow || direction == ConsoleKey.W)
                 {
                     if (currentCell_Y > 1)
-                    {                       
+                    {
                         if (!fixSharp)
                         {
                             Console.SetCursorPosition(currentCell_X, currentCell_Y);
@@ -343,7 +348,7 @@ namespace Sea_Wars
                 else if (direction == ConsoleKey.DownArrow || direction == ConsoleKey.S)
                 {
                     if (currentCell_Y < 9)
-                    {                        
+                    {
                         if (!fixSharp)
                         {
                             Console.SetCursorPosition(currentCell_X, currentCell_Y);
@@ -358,12 +363,12 @@ namespace Sea_Wars
                 }
                 else if (direction == ConsoleKey.Enter)
                 {
-                    
                     if (Board.EnemyField[currentCell_Y][currentCell_X - 30] == '#' && Board.EmtyField[currentCell_Y][currentCell_X - 30] != 'X')
                     {
                         Board.EmtyField[currentCell_Y] = Program.ChengeSymb(currentCell_X - 30, Board.EmtyField[currentCell_Y], 'X');
-                        enemyHealth--;                        
+                        enemyHealth--;
                         choice = true;
+                        DrawImpossibleCells(currentCell_X - 30, currentCell_Y);
                     }
                     else if (Board.EmtyField[currentCell_Y][currentCell_X - 30] != '*' && Board.EnemyField[currentCell_Y][currentCell_X - 30] == '.')
                     {
@@ -373,12 +378,47 @@ namespace Sea_Wars
                     else
                     {
                         choice = false;
-                        message = "U were already been on this cell";                       
+                        message = "U were already been on this cell";
                     }
                 }
             }
             return enemyHealth;
         }
+
+        public void DrawImpossibleCells(int x, int y)
+        {
+            if (!AI.CheckBesideCell(x, y, 0)) // for 1-deck ships
+            {
+                for (int k = 0, i = 1, j = 0; k < 8; i *= -1, j *= i, k++)
+                {
+                    switch (k)
+                    {
+                        case 2:
+                            {
+                                j++;
+                                break;
+                            }
+                        case 6:
+                            {
+                                i = 0;
+                                j = 1;
+                                break;
+                            }
+                        case 7:
+                            {
+                                j = -1;
+                                break;
+                            }
+                    }
+                    if (Board.EmtyField[y + j][x + (i * 2)] == '.')
+                    {
+                        Board.EmtyField[y + j] = Program.ChengeSymb(x + (i * 2), Board.EmtyField[y + j], '*');
+                    }
+                }
+                    
+            }
+        }
+     
     }
 
 }

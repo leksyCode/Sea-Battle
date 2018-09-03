@@ -22,12 +22,12 @@ namespace Sea_Wars
             Random rand = new Random();
             int typeOfBoats = 4;
 
-            while (typeOfBoats != 0)           
+            while (typeOfBoats != 0)
             {
                 bool buildSuccessful = true;
                 for (int k = 0; k < (5 - typeOfBoats); k++)  // Change count of type of ships on each iteration
                 {
-                   // random
+                    // random
                     bool verticall = Convert.ToBoolean(rand.Next(0, 2));
                     int randX = rand.Next(2, Board.width);
                     int randY = rand.Next(1, Board.EnemyField.Length - 1);
@@ -40,7 +40,7 @@ namespace Sea_Wars
 
                     if (verticall == false && randX >= 10) // horizontal
                     {
-                        for (int i = 0; i < typeOfBoats; i++) 
+                        for (int i = 0; i < typeOfBoats; i++)
                         {
                             dir = 1;
                             if (CheckBesideCell(randX - (i * 2), randY, dir) == false)
@@ -48,8 +48,8 @@ namespace Sea_Wars
                                 Board.EnemyField[randY] = Program.ChengeSymb(randX - (i * 2), Board.EnemyField[randY], '#');
                                 buildSuccessful = true;
                             }
-                            else 
-                            {                               
+                            else
+                            {
                                 DeleteUnfinishedBoats(dir, i, randX - (i * 2), randY);
                                 buildSuccessful = false;
                                 break;
@@ -100,7 +100,7 @@ namespace Sea_Wars
                             dir = 4;
                             if (CheckBesideCell(randX, randY + i, dir) == false)
                             {
-                                Board.EnemyField[randY + i] = Program.ChengeSymb(randX, Board.EnemyField[randY + i], '#');  
+                                Board.EnemyField[randY + i] = Program.ChengeSymb(randX, Board.EnemyField[randY + i], '#');
                                 buildSuccessful = true;
                             }
                             else
@@ -120,7 +120,7 @@ namespace Sea_Wars
                 {
                     typeOfBoats--; // change type
                 }
-            }           
+            }
         }
 
         private void DeleteUnfinishedBoats(int dir, int i, int x, int y)
@@ -143,9 +143,9 @@ namespace Sea_Wars
             }
         }
 
-        private static bool CheckBesideCell(int x, int y, int dir)
+        public static bool CheckBesideCell(int x, int y, int dir)
         {
-            if (Board.EnemyField[y][x] == '#')
+            if (Board.EnemyField[y][x] == '#' && dir != 0)
             {
                 return true;
             }
@@ -179,14 +179,31 @@ namespace Sea_Wars
             }
         }
 
-        int i = 0;
         public int MakeStep(int playerHealth)
         {
-            
-            Console.SetCursorPosition(0, 13);
-            Console.WriteLine($"Steps: { i }, Player Health: {playerHealth},  EnemyHEalth: {Health}.");
-            i++;
+            Random rand = new Random();
+            int randX = rand.Next(2, Board.width);
+            int randY = rand.Next(1, Board.EnemyField.Length - 1);
+            while (randX % 2 != 0)
+            {
+                randX = rand.Next(2, Board.width);
+            }
+
+            if (Board.PlayerField[randY][randX] == '#')
+            {
+                Board.PlayerField[randY] = Program.ChengeSymb(randX, Board.PlayerField[randY], 'X');
+                playerHealth--;
+            }
+            else
+            {
+                Board.PlayerField[randY] = Program.ChengeSymb(randX, Board.PlayerField[randY], '*');
+            }
+
+
+            GameEngine.ShowInfo(0, "Tactical pause...");
+            //Thread.Sleep(2500);
             return playerHealth;
+           
         }
     }
 }

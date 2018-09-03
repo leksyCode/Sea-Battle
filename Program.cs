@@ -17,12 +17,13 @@ namespace Sea_Wars
             
             GameEngine.DrawPlayerMap();
             GameEngine.DrawHiddenEnemyMap();
+            
             GameEngine.ShowInstructions();
 
 
-            a.CreatingAIMapAlgorithm(); // works almost always (95%)          
-            //p.CreatingPlayerMap();
-          
+            a.CreatingAIMapAlgorithm(); // works almost always (95%)   
+            p.CreatingPlayerMap();
+
 
         
             while (p.Health > 0 && a.Health > 0)
@@ -30,8 +31,16 @@ namespace Sea_Wars
                 a.Health = p.MakeStep(a.Health);
                 GameEngine.DrawHiddenEnemyMap();
                 p.Health = a.MakeStep(p.Health);
+                GameEngine.DrawPlayerMap();
+                GameEngine.ShowInfo(0, $"Player HP: {p.Health}\t\t AI HP {a.Health}");
             }
 
+            if (p.Health > 0)  
+                Console.WriteLine("\n Player winn!");
+            else
+                Console.WriteLine("\n AI winn!");
+
+            GameEngine.DrawEnemyMap();
             // TO DO NEXT11
 
             Console.ReadLine();

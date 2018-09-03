@@ -53,7 +53,7 @@ namespace Sea_Wars
             Console.SetCursorPosition(0, 14);
             Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine("\t\t   Instructions ");
-            Console.WriteLine("Creat your sea flot. U can use navigation buttons!");
+            Console.WriteLine("Creat your sea flot. U can use navigation buttons, pick cell and give her direction");
         }
 
         public static void ShowInfo(int stage, string message)
